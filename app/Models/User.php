@@ -52,12 +52,12 @@ class User extends Authenticatable implements MustVerifyEmail
 
 
     /**
-     * Get all of the features for the User
+     * Get all of the feature for the User
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function features(): HasMany
+    public function feature(): HasMany
     {
-        return $this->hasMany(Features::class);
+        return $this->hasMany(Feature::class);
     }
 }

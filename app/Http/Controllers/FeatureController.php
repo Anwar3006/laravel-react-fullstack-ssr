@@ -2,17 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Features;
+use App\Http\Resources\FeatureResource;
+use App\Models\Feature;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
-class FeaturesController extends Controller
+class FeatureController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        $paginated = Feature::latest()->paginate();
+        return Inertia::render('Feature/Index', [
+            'features' => FeatureResource::collection($paginated)
+        ]);
     }
 
     /**
@@ -34,7 +39,7 @@ class FeaturesController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Features $features)
+    public function show(Feature $feature)
     {
         //
     }
@@ -42,7 +47,7 @@ class FeaturesController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Features $features)
+    public function edit(Feature $feature)
     {
         //
     }
@@ -50,7 +55,7 @@ class FeaturesController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Features $features)
+    public function update(Request $request, Feature $feature)
     {
         //
     }
@@ -58,7 +63,7 @@ class FeaturesController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Features $features)
+    public function destroy(Feature $feature)
     {
         //
     }
