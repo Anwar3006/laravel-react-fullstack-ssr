@@ -1,7 +1,7 @@
 import FeatureItem from "@/Components/FeatureComponent/FeatureItem";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Feature, PaginatedData } from "@/types";
-import { Head } from "@inertiajs/react";
+import { Head, Link } from "@inertiajs/react";
 
 export default function Index({
   features,
@@ -17,6 +17,27 @@ export default function Index({
       }
     >
       <Head title="Features" />
+
+      <Link
+        href={route("feature.create")}
+        className="mb-10 flex gap-2 items-center justify-center px-3 py-3 bg-slate-400 hover:bg-slate-500 rounded-lg w-[200px]"
+      >
+        <p className="text-xl font-semibold">Add Feature</p>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth="1.5"
+          stroke="currentColor"
+          className="size-6"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M12 4.5v15m7.5-7.5h-15"
+          />
+        </svg>
+      </Link>
 
       {features.data.map((feature) => (
         <FeatureItem feature={feature} key={feature.id} />

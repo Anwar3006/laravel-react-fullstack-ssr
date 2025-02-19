@@ -7,6 +7,8 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class FeatureResource extends JsonResource
 {
+    //to remove the data field and return the object directly
+    public static $wrap = false;
     /**
      * Transform the resource into an array.
      *

@@ -1,3 +1,13 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.ql-toolbar.ql-snow {
+    background-color: white !important;
+    border-radius: 5px;
+}
+
+.ql-container.ql-snow {
+    background-color: rgb(17 24 39 / var(--tw-bg-opacity, 1));
+    border-radius: 5px;
+}

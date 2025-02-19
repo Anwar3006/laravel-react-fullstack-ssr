@@ -3,24 +3,25 @@ import InputLabel from "@/Components/InputLabel";
 import TextArea from "@/Components/TextArea";
 import TextInput from "@/Components/TextInput";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
+import { Feature } from "@/types";
 import { Head, Link, useForm, usePage } from "@inertiajs/react";
 import { FormEventHandler } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 
-export default function Create() {
+export default function Edit({ feature }: { feature: Feature }) {
   const user = usePage().props.auth.user;
 
-  const { data, setData, post, errors, processing, recentlySuccessful } =
+  const { data, setData, put, errors, processing, recentlySuccessful } =
     useForm({
-      name: "",
-      description: "",
+      name: feature.name,
+      description: feature.description,
     });
 
   const submit: FormEventHandler = (e) => {
     e.preventDefault();
-
-    post(route("feature.store"), {
+    console.log(data);
+    put(route("feature.update", feature.id), {
       preserveScroll: true,
     });
   };
@@ -29,7 +30,7 @@ export default function Create() {
     <AuthenticatedLayout
       header={
         <h2 className="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">
-          Create a New Feature
+          Edit a Feature
         </h2>
       }
     >
@@ -89,11 +90,14 @@ export default function Create() {
                 onChange={(value) => setData("description", value)}
               />
 
-              <InputError className="mt-2" message={errors.name} />
+              <InputError className="mt-2" message={errors.description} />
             </div>
 
-            <button className="bg-white/90 text-zinc-900 hover:bg-white/70 px-4 py-3 rounded-lg">
-              Create
+            <button
+              className="bg-white/90 text-zinc-900 hover:bg-white/70 px-4 py-3 rounded-lg"
+              type="submit"
+            >
+              Update
             </button>
           </form>
         </div>

@@ -1,5 +1,8 @@
 import { Feature } from "@/types";
+import { Link } from "@inertiajs/react";
 import React, { useState } from "react";
+import FeatureActionDropdown from "./FeatureActionDropdown";
+import DOMPurify from "dompurify";
 
 const FeatureItem = ({ feature }: { feature: Feature }) => {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -50,19 +53,41 @@ const FeatureItem = ({ feature }: { feature: Feature }) => {
         </div>
 
         <div className="flex-1">
-          <h2 className="text-2xl mb-2">{feature.name}</h2>
-          <p className="text-gray-400">
-            {isExpanded
-              ? feature.description
-              : `${feature.description.slice(0, 200)}...`}
-          </p>
-          <button
-            className="px-2 py-1 rounded-md bg-gray-300 text-zinc-900 mt-3 font-medium"
-            onClick={toggleReadMore}
-          >
-            {isExpanded ? "Read Less" : "Read More"}
-          </button>
+          <h2 className="text-2xl mb-2">
+            <Link href={route("feature.show", feature)}>{feature.name}</Link>
+          </h2>
+
+          {feature.description && feature.description.length > 200 ? (
+            <>
+              <div
+                className="text-gray-400"
+                dangerouslySetInnerHTML={{
+                  __html: isExpanded
+                    ? DOMPurify.sanitize(feature.description)
+                    : `${(DOMPurify.sanitize(feature.description) || "").slice(
+                        0,
+                        200
+                      )}...`,
+                }}
+              />
+              <button
+                className="px-2 py-1 rounded-md bg-gray-300 text-zinc-900 mt-3 font-medium"
+                onClick={toggleReadMore}
+              >
+                {isExpanded ? "Read Less" : "Read More"}
+              </button>
+            </>
+          ) : (
+            <div
+              className="text-gray-400"
+              dangerouslySetInnerHTML={{
+                __html: DOMPurify.sanitize(feature.description),
+              }}
+            />
+          )}
         </div>
+
+        <FeatureActionDropdown feature={feature} />
       </div>
     </div>
   );
