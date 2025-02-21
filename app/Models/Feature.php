@@ -28,7 +28,7 @@ class Feature extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function upvote(): HasMany
+    public function upvotes(): HasMany
     {
         return $this->hasMany(Upvote::class);
     }

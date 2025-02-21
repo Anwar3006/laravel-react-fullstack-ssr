@@ -7,6 +7,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Upvote extends Model
 {
+    public $timestamps = false;
+    protected $fillable = ['feature_id', 'user_id', 'upvote'];
+    
     /**
      * Get the feature that owns the Upvote
      *
@@ -14,6 +17,6 @@ class Upvote extends Model
      */
     public function feature(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Feature::class);
     }
 }
