@@ -1,3 +1,5 @@
+import CommentForm from "@/Components/CommentComponent/CommentForm";
+import CommentItem from "@/Components/CommentComponent/CommentItem";
 import FeatureUpvoteDownvote from "@/Components/FeatureComponent/FeatureUpvoteDownvote";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Feature } from "@/types";
@@ -5,8 +7,6 @@ import { Head, Link } from "@inertiajs/react";
 import DOMPurify from "dompurify";
 
 export default function Show({ feature }: { feature: Feature }) {
-  console.log(feature);
-
   return (
     <AuthenticatedLayout
       header={
@@ -76,6 +76,19 @@ export default function Show({ feature }: { feature: Feature }) {
                   __html: DOMPurify.sanitize(feature.description),
                 }}
               />
+            </div>
+
+            <div className="w-full h-[1px] bg-gray-700 mt-14" />
+            <div className="mt-8">
+              <CommentForm feature={feature} />
+              {feature.comments &&
+                feature.comments.map((comment) => (
+                  <CommentItem
+                    comment={comment}
+                    feature={feature}
+                    key={comment.id}
+                  />
+                ))}
             </div>
           </div>
         </div>
