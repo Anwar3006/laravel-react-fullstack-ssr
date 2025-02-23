@@ -1,10 +1,19 @@
 import { Config } from "ziggy-js";
 
+export interface Role {
+  id: number;
+  name: string;
+  guard_name: string;
+  created_at: string;
+  updated_at: string;
+}
+
 export interface User {
   id: number;
   name: string;
   email: string;
   email_verified_at?: string;
+  created_at?: string;
   permissions: string[];
   roles: string[];
 }
