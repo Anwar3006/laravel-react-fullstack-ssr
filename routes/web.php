@@ -1,5 +1,6 @@
 <?php
 
+use App\Enum\PermissionsEnum;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\FeatureController;
 use App\Http\Controllers\ProfileController;
@@ -21,13 +22,18 @@ Route::middleware('auth')->group(function () {
             return Inertia::render('Dashboard');
         })->name('dashboard');
 
-        Route::resource('feature', FeatureController::class);
+        //Except for index and show routes, all users need to have the right permission in order to access thr route
+        Route::resource('feature', FeatureController::class)->except(['index', 'show'])->middleware('can:'.PermissionsEnum::ManageFeatures->value);
+        Route::get('/feature', [FeatureController::class, 'index'])->name('feature.index');
+        Route::get('/feature/{feature}', [FeatureController::class, 'show'])->name('feature.show');
 
         Route::post('/feature/{feature}/upvote', [UpvoteController::class, 'store'])->name('upvote.store');
         Route::delete('/feature/{feature}/upvote', [UpvoteController::class, 'destroy'])->name('upvote.destroy');
 
-        Route::post('/feature/{feature}/comments', [CommentController::class, 'store'])->name('comment.store');
-        Route::delete('/feature/{feature}/comments/{comment}', [CommentController::class, 'destroy'])->name('comment.destroy');
+        Route::post('/feature/{feature}/comments', [CommentController::class, 'store'])
+            ->middleware('can:'.PermissionsEnum::ManageComments->value)->name('comment.store');
+        Route::delete('/feature/{feature}/comments/{comment}', [CommentController::class, 'destroy'])
+            ->middleware('can:'.PermissionsEnum::ManageComments->value)->name('comment.destroy');
     });
 });
 

@@ -1,13 +1,13 @@
 import FeatureItem from "@/Components/FeatureComponent/FeatureItem";
+import { can } from "@/helper";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Feature, PaginatedData } from "@/types";
+import { Feature, PageProps, PaginatedData } from "@/types";
 import { Head, Link } from "@inertiajs/react";
 
 export default function Index({
+  auth,
   features,
-}: {
-  features: PaginatedData<Feature>;
-}) {
+}: PageProps<{ features: PaginatedData<Feature> }>) {
   return (
     <AuthenticatedLayout
       header={
@@ -18,29 +18,31 @@ export default function Index({
     >
       <Head title="Features" />
 
-      <Link
-        href={route("feature.create")}
-        className="mb-10 flex gap-2 items-center justify-center px-3 py-3 bg-slate-400 hover:bg-slate-500 rounded-lg w-[200px]"
-      >
-        <p className="text-xl font-semibold">Add Feature</p>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          strokeWidth="1.5"
-          stroke="currentColor"
-          className="size-6"
+      {can(auth.user, "manage_features") && (
+        <Link
+          href={route("feature.create")}
+          className="mb-10 flex gap-2 items-center justify-center px-3 py-3 bg-slate-400 hover:bg-slate-500 rounded-lg w-[200px]"
         >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M12 4.5v15m7.5-7.5h-15"
-          />
-        </svg>
-      </Link>
+          <p className="text-xl font-semibold">Add Feature</p>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth="1.5"
+            stroke="currentColor"
+            className="size-6"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M12 4.5v15m7.5-7.5h-15"
+            />
+          </svg>
+        </Link>
+      )}
 
       {features.data.map((feature) => (
-        <FeatureItem feature={feature} key={feature.id} />
+        <FeatureItem feature={feature} user={auth.user} key={feature.id} />
       ))}
     </AuthenticatedLayout>
   );

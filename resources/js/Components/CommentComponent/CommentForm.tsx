@@ -1,10 +1,11 @@
-import { Feature } from "@/types";
+import { Feature, User } from "@/types";
 import React, { FormEventHandler } from "react";
 import TextArea from "../TextArea";
 import { useForm } from "@inertiajs/react";
 import PrimaryButton from "../PrimaryButton";
+import { can } from "@/helper";
 
-const CommentForm = ({ feature }: { feature: Feature }) => {
+const CommentForm = ({ feature, user }: { feature: Feature; user: User }) => {
   const { data, setData, post, processing } = useForm({
     comment: "",
   });
@@ -17,6 +18,18 @@ const CommentForm = ({ feature }: { feature: Feature }) => {
       onSuccess: () => setData("comment", ""),
     });
   };
+
+  if (!can(user, "manage_comments")) {
+    return (
+      <div className="mb-5">
+        {!can(user, "manage_comments") && (
+          <p className="text-center text-gray-700">
+            You don't have permission to leave comments
+          </p>
+        )}
+      </div>
+    );
+  }
 
   return (
     <div>

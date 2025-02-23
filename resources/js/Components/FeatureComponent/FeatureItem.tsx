@@ -1,13 +1,13 @@
-import { Feature } from "@/types";
+import { Feature, User } from "@/types";
 import { Link } from "@inertiajs/react";
 import { useState } from "react";
 import FeatureActionDropdown from "./FeatureActionDropdown";
 import DOMPurify from "dompurify";
 import FeatureUpvoteDownvote from "./FeatureUpvoteDownvote";
+import { can } from "@/helper";
 
-const FeatureItem = ({ feature }: { feature: Feature }) => {
+const FeatureItem = ({ feature, user }: { feature: Feature; user: User }) => {
   const [isExpanded, setIsExpanded] = useState(false);
-  const [voted, setVoted] = useState(0);
 
   const toggleReadMore = () => {
     setIsExpanded(!isExpanded);
@@ -76,7 +76,9 @@ const FeatureItem = ({ feature }: { feature: Feature }) => {
           </div>
         </div>
 
-        <FeatureActionDropdown feature={feature} />
+        {can(user, "manage_features") && (
+          <FeatureActionDropdown feature={feature} />
+        )}
       </div>
     </div>
   );
